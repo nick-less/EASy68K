@@ -9,6 +9,8 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+    - name: Install xmllint
+      run: sudo apt-get install libgtkmm-3.0-dev libsdl2-dev
     - name: configure
       run: mkdir build && cd build && cmake -DCMAKE_CXX_FLAGS="-Werror" ..
     - name: build
@@ -21,7 +23,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, windows-2016]
+        os: [windows-2016]
     
     steps:
     - uses: actions/checkout@v1
