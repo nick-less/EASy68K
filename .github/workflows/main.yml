@@ -9,8 +9,10 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+    - name: Checkout submodules
+      uses: textbook/git-checkout-submodule-action@master
       with:
-        remote: true    
+        remote: true      
     - name: Install gtk, sdl
       run: sudo apt-get update && sudo apt-get install libgtkmm-3.0-dev libsdl2-dev
     - name: configure
