@@ -9,7 +9,8 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - name: Install gtk, sdl
+      with:
+        remote: true    - name: Install gtk, sdl
       run: sudo apt-get update && sudo apt-get install libgtkmm-3.0-dev libsdl2-dev
     - name: configure
       run: mkdir build && cd build && cmake -DCMAKE_CXX_FLAGS="-Werror" ..
