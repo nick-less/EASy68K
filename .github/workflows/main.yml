@@ -20,10 +20,7 @@ jobs:
 
   build-windows:
 
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-2016]
+    runs-on: windows-latest
     
     steps:
     - uses: actions/checkout@v1
