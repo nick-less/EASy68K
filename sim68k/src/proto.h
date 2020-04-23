@@ -172,6 +172,6 @@ void finishSim();
 void errmess();		/* error message for invalid input */
 void startSim();
 void DFcommand();        // shows register display
-void __fastcall initPrint();
+void initPrint();
 void haltSimulator();
 int memoryMapCheck(maptype mapt, int loc, int bytes);
