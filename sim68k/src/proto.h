@@ -174,4 +174,4 @@ void startSim();
 void DFcommand();        // shows register display
 void initPrint();
 void haltSimulator();
-int memoryMapCheck(maptype mapt, int loc, int bytes);
+int memoryMapCheck(int mapt, int loc, int bytes);

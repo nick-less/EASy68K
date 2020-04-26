@@ -181,5 +181,3 @@ int	NBCD()
   inc_cyc ( (inst & 0x0030) ? 8 : 6);
   return SUCCESS;
 }
-
-

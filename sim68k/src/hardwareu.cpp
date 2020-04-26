@@ -6,23 +6,21 @@
 
 //---------------------------------------------------------------------------
 
-#include <vcl.h>
 
 #pragma hdrstop
 
 #include "hardwareu.h"
 #include "Memory1.h"
-#include "Stack1.h"
+#include "stack1.h"
 #include "SIM68Ku.h"
 #include "BREAKPOINTSu.h"
-
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 THardware *Hardware;
 
 static const TColor clDrkMaroon = 0x02000040;
-static const SWITCH_ADDR = 0xE0000A;
+static const unsigned long SWITCH_ADDR = 0xE0000A;
 
 AnsiString str1;
 int seg7loc, LEDloc, switchLoc, pbLoc;
@@ -32,6 +30,12 @@ bool hardwareEnabled;
 int ROMStart=0, ROMEnd=0, ReadStart=0, ReadEnd=0;
 int ProtectedStart=0, ProtectedEnd=0, InvalidStart=0, InvalidEnd=0;
 bool ROMMap=false, ReadMap=false, ProtectedMap=false, InvalidMap=false;
+
+
+void Beep() {
+
+}
+
 
 //---------------------------------------------------------------------------
 __fastcall THardware::THardware(TComponent* Owner)

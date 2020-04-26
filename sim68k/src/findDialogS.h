@@ -16,16 +16,16 @@ __published:	// IDE-managed Components
         TEdit *findText;
         TButton *findNextBtn;
         TButton *cancelBtn;
-        void __fastcall findNextBtnClick(TObject *Sender);
-        void __fastcall cancelBtnClick(TObject *Sender);
-        void __fastcall findTextChange(TObject *Sender);
-        void __fastcall FormShow(TObject *Sender);
-        void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
+        void  findNextBtnClick(TObject *Sender);
+        void  cancelBtnClick(TObject *Sender);
+        void  findTextChange(TObject *Sender);
+        void  FormShow(TObject *Sender);
+        void  FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
 private:	// User declarations
         bool    findNext;
 public:		// User declarations
-        __fastcall TfindDialogFrm(TComponent* Owner);
+         TfindDialogFrm(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfindDialogFrm *findDialogFrm;

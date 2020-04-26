@@ -389,5 +389,3 @@ inc_cyc (4);
 return SUCCESS;
 
 }
-
-

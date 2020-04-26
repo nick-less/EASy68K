@@ -17,8 +17,8 @@ __published:	// IDE-managed Components
         TButton *CancelBtn;
 private:	// User declarations
 public:		// User declarations
-        __fastcall TLogfileDialog(TComponent* Owner);
-        void __fastcall TLogfileDialog::setMessage(AnsiString str);
+        TLogfileDialog(TComponent* Owner);
+        void setMessage(AnsiString str);
 
 };
 //---------------------------------------------------------------------------

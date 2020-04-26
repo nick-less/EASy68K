@@ -10,7 +10,6 @@
 #include <ComCtrls.hpp>
 #include <ExtCtrls.hpp>
 #include <Buttons.hpp>
-#include "CSPIN.h"
 //---------------------------------------------------------------------------
 class TStackFrm : public TForm
 {

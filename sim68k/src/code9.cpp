@@ -17,9 +17,8 @@ related operations:
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <dos.h>
 #include <Printers.hpp>
-
+#include <SDL.h>
 #include "extern.h"         // contains global "extern" declarations
 #include "simIOu.h"
 #include "SIM68Ku.h"
@@ -32,7 +31,7 @@ extern uchar keyUpCode;         // "
 extern bool disableKeyCommands;  // defined in SIM68Ku
 
 // global variables for printing
-TPrinter *Prntr;
+//TPrinter *Prntr;
 bool printing = false;
 int pageRowHeight;
 int pageColWidth;
@@ -44,8 +43,10 @@ int pageX;
 int pageY;
 
 
+
 void __fastcall formFeed()
 {
+	/*
   if (!printing) {
     initPrint();
     Prntr->BeginDoc();
@@ -53,27 +54,33 @@ void __fastcall formFeed()
   Prntr->EndDoc();
   printing = false;
   pageY = pageTop;
+  */
 }
 
 void __fastcall lineFeed()
 {
+	/*
   pageY += pageRowHeight;
   if (pageY > pageBot) {
     formFeed();
   }
+  */
 }
 
 void __fastcall nextX()
 {
+	/*
   pageX += pageColWidth;
   if (pageX > pageRight) {
     pageX = pageX - pageRight + pageLeft;
     lineFeed();
   }
+  */
 }
 
 void __fastcall initPrint()
 {
+/*
   Prntr = Printer();
   printing = false;
   Prntr->Canvas->Font->Assign(Form1->FontDialogPrinter->Font);
@@ -85,6 +92,7 @@ void __fastcall initPrint()
   pageRight = Prntr->PageWidth - pageLeft;
   pageX = pageLeft;
   pageY = pageTop;
+  */
 }
 
 //---------------------------------------------------------------------------
@@ -99,6 +107,7 @@ void __fastcall initPrint()
 //  \v	0x0B	VT	Vertical tab
 void __fastcall printChar(char ch)
 {
+	/*
   if (!printing) {
     initPrint();
     Prntr->BeginDoc();
@@ -137,6 +146,7 @@ void __fastcall printChar(char ch)
         nextX();
       }
   } // end switch
+  */
 }
 
 //-----------------------------------------------------
@@ -301,7 +311,7 @@ int	STOP()
         D1.L is color as 0x00BBGGRR
           BB is amount of blue from 0x00 to 0xFF
           GG is amount of green from 0x00 to 0xFF
-          RR is amount of red from 0x00 to 0xFF
+          RR is amount of red from 0x00 to 0xFF
         D2.L
           Low word is style by bits 0 = off, 1 = on
           bit0 is Bold
@@ -562,7 +572,7 @@ of zero indicates success.
  80 - Set pen color where D1.L is color as 0x00BBGGRR
       BB is amount of blue from 0x00 to 0xFF
       GG is amount of green from 0x00 to 0xFF
-      RR is amount of red from 0x00 to 0xFF
+ï¿½     RR is amount of red from 0x00 to 0xFF
  81 - Set fill color where D1.L is color as 0x00BBGGRR
  82 - Draw pixel at X,Y in current pen color where X = D1.W & Y = D2.W.
       Not affected by drawing mode.
@@ -571,21 +581,21 @@ of zero indicates success.
       where X1 = D1.W, Y1 = D2.W, X2 = D3.W, Y2 = D4.W
  85 - Draw line to X,Y where X = D1.W & Y = D2.W
  86 - Move to X,Y where X = D1.W & Y = D2.W
- 87 - Draw rectangle defined by (Left X, Upper Y, Right X, Lower Y). 
+ 87 - Draw rectangle defined by (Left X, Upper Y, Right X, Lower Y).ï¿½
       where LX = D1.W, UY = D2.W, RX = D3.W, LY = D4.W
       The rectangle is drawn using line color and filled using fill color.
  88 - Draw ellipse bounded by the rectangle (Left X, Upper Y, Right X, Lower Y)
       where LX = D1.W, UY = D2.W, RX = D3.W, LY = D4.W
       The ellipse is drawn using line color and filled using fill color.
-      A circle is drawn if the bounding rectangle is a square.
+ï¿½     A circle is drawn if the bounding rectangle is a square.
  89 - Flood Fill the area at X, Y with the fill color where X = D1.W & Y = D2.W
- 90 - Draw unfilled rectangle defined by (Left X, Upper Y, Right X, Lower Y). 
+ 90 - Draw unfilled rectangle defined by (Left X, Upper Y, Right X, Lower Y).ï¿½
       where LX = D1.W, UY = D2.W, RX = D3.W, LY = D4.W
       The rectangle is drawn using line color and is not filled.
  91 - Draw unfilled ellipse bounded by the rectangle (Left X, Upper Y, Right X, Lower Y)
       where LX = D1.W, UY = D2.W, RX = D3.W, LY = D4.W
       The ellipse is drawn using line color and is not filled.
-      A circle is drawn if the bounding rectangle is a square.
+ï¿½     A circle is drawn if the bounding rectangle is a square.
  92 - Set drawing mode where D1.W is mode number as:
         0 - Always black
         1 - Always white
@@ -752,8 +762,8 @@ int TRAP()
         simIO->textIn(inStr, &D[1], NULL); // read string into inStr, length in D1
         break;
       case 3:  // display number in D1.L
-        itoa(D[1], buf, 10);            // convert D1.L to string, put in buf
-        simIO->textOut(buf);            // display number without CRLF
+//        std::itos(D[1], buf, 10);            // convert D1.L to string, put in buf
+        simIO->textOut(std::to_string(D[1]));            // display number without CRLF
         break;
       case 4:  // read number to D1.L   // inputBuf & inputSize must be global
         simIO->textIn(inputBuf, &inputSize, &D[1]); // read number to D1
@@ -773,12 +783,14 @@ int TRAP()
         }
         break;
       case 8:  // Return time in hundredths of a second since midnight in D1.L
+    	  /*
         struct  time t;
         gettime(&t);
         D[1] = t.ti_hour * 60 * 60 * 100 +
                t.ti_min  * 60 * 100 +
                t.ti_sec  * 100 +
                t.ti_hund;
+               */
         break;
       case 9:  // terminate the program
         Form1->AutoTraceTimer->Enabled = false;
@@ -823,7 +835,7 @@ int TRAP()
         break;
       case 15:                    // Display D1 converted to radix in D2.B
         if ((char)D[2]>=2 && (char)D[2]<=36) {   // if 2 <= D2.B <= 36
-          ultoa(D[1], buf, (char)D[2]);  // convert D1.L to string, put in buf
+//          ultoa(D[1], buf, (char)D[2]);  // convert D1.L to string, put in buf
           AnsiString hex = buf;
           hex = hex.UpperCase();         // convert to upper case
           simIO->textOut(hex.c_str());   // display number without CRLF
@@ -848,8 +860,8 @@ int TRAP()
         if (code == BUS_ERROR)        // if bus error caused by memory map
           return code;
         simIO->textOut(inStr);    // display string without CRLF
-        itoa(D[1], buf, 10);      // convert D1.L to string, put in buf
-        simIO->textOut(buf);      // display number without CRLF
+       // itoa(D[1], buf, 10);      // convert D1.L to string, put in buf
+        simIO->textOut(std::to_string(D[1]));      // display number without CRLF
         break;
       // Displays the NULL terminated string at (A1) without CRLF
       //  then reads a number from the keyboard into D1.L.
@@ -867,7 +879,7 @@ int TRAP()
         simIO->getKeyState(&D[1]);
         break;
       case 20:
-        sprintf(buf,"%*d",(char)D[2],D[1]);
+        sprintf(buf,"%*ld",(char)D[2],D[1]);
         simIO->textOut(buf);            // display number without CRLF
         break;
       case 21:                          // if set font color
@@ -880,7 +892,7 @@ int TRAP()
         {uint n = (unsigned)D[1];
         while(n-- > 0 && runMode) {
           Application->ProcessMessages();
-          Sleep(10);                    // delay 1/100 second
+          SDL_Delay(10);                    // delay 1/100 second
         }}
         break;
       case 24:
@@ -910,13 +922,13 @@ int TRAP()
             Hardware->Show();
             break;
           case 01:              // return address of 7-segment display in D1.L
-            D[1] = StrToInt("0x" + Hardware->seg7addr->EditText);
+            D[1] = std::stoul("0x" + Hardware->seg7addr->EditText, nullptr, 16);
             break;
           case 02:              // return address of LEDs in D1.L
-            D[1] = StrToInt("0x" + Hardware->LEDaddr->EditText);
+            D[1] = std::stoul("0x" + Hardware->LEDaddr->EditText, nullptr, 16);
             break;
           case 03:              // return address of toggle switches in D1.L
-            D[1] = StrToInt("0x" + Hardware->switchAddr->EditText);
+            D[1] = std::stoul("0x" + Hardware->switchAddr->EditText, nullptr, 16);
             break;
           case 04:              // return sim68k version number in D1.L
             D[1] = VERSION;
@@ -930,7 +942,7 @@ int TRAP()
             Hardware->setAutoIRQ((uchar)D[2], D[3]);
             break;
           case 07:              // return address of push button switches in D1.L
-            D[1] = StrToInt("0x" + Hardware->pbAddr->EditText);
+            D[1] = std::stoul("0x" + Hardware->pbAddr->EditText, nullptr, 16);
             break;
         }
         break;
@@ -1320,19 +1332,3 @@ int     LINE1111()
   }
   return LINE_1111;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

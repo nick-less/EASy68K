@@ -17,6 +17,8 @@ routines are :
 
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "SDL.h"
 #include "extern.h"        		// global declarations
 #include "opcodes.h"       		// opcode masks for decoding
 #include "SIM68Ku.h"
@@ -646,7 +648,7 @@ int runprog()
   do {
     Application->ProcessMessages();
     if(inputMode)
-      Sleep(10);        // don't hog the CPU while waiting for input
+       SDL_Delay(10);        // don't hog the CPU while waiting for input
   } while (inputMode && runMode);
 
   if (errflg) {        // if illegal opcode in program initiate an exception
@@ -771,9 +773,9 @@ int exec_inst()
           if (trace) {
             mem_req (PC, (long) WORD_MASK, &temp);
             if(inst == 0xFFFF && temp == 0xFFFF)  // if SIMHALT command
-              sprintf(buffer,"PC=%08X  Code=%04X  SIMHALT", PC-2, inst);
+              sprintf(buffer,"PC=%08lX  Code=%04X  SIMHALT", PC-2, inst);
             else
-              sprintf(buffer,"PC=%08X  Code=%04X  %s", PC-2, inst, inst_arr[i].name);
+              sprintf(buffer,"PC=%08lX  Code=%04X  %s", PC-2, inst, inst_arr[i].name);
             Form1->Message->Lines->Add(buffer);
 
             if (logging)
@@ -795,7 +797,7 @@ int exec_inst()
                     if (addr+i >= MEMSIZE)            // if invalid address
                       fprintf(ElogFile,"xx ");        // is this necessary?
                     else
-                      fprintf(ElogFile,"%02hX ",(unsigned char)memory[(addr+i) & ADDRMASK]);
+                      fprintf(ElogFile,"%02X ",(unsigned char)memory[(addr+i) & ADDRMASK]);
                   }
                   // display 16 bytes as ASCII
                   for (int i=0; i<16; i++) {
@@ -803,7 +805,7 @@ int exec_inst()
                       fprintf(ElogFile,"-");          // is this necessary?
                     else {
                       if (memory[(addr+i) & ADDRMASK] >= ' ')    // if displayable char
-                        fprintf(ElogFile,"%hc",memory[(addr+i) & ADDRMASK]);
+                        fprintf(ElogFile,"%c",memory[(addr+i) & ADDRMASK]);
                       else
                         fprintf(ElogFile,"-");
                     }
@@ -836,8 +838,8 @@ int exec_inst()
               // ----- if logging instruction -----
               if (ElogFlag) {
                 if(Form1->lineToLog() == false) {  // output instruction to log file
-                  fprintf(ElogFile, buffer); // if source not present output limited info
-                  fprintf(ElogFile, "\n");
+                  fprintf(ElogFile, "%s", buffer); // if source not present output limited info
+                  fprintf(ElogFile, "%s", "\n");
                 }
                 fflush(ElogFile);                  // write all bufferred data to file
               }
@@ -1007,7 +1009,7 @@ int exec_inst()
     } // end if
   } catch( ... ) {
     Form1->AutoTraceTimer->Enabled = false;
-    sprintf(buffer, "ERROR: An exception occurred in routine 'exec_inst'.\nPC=%08X  Code=%04X", PC-2, inst);
+    sprintf(buffer, "ERROR: An exception occurred in routine 'exec_inst'.\nPC=%08lX  Code=%04X", PC-2, inst);
     Application->MessageBox(buffer, "Error", MB_OK);
     trace = true;       // stop running programs
     sstep = false;
@@ -1125,4 +1127,4 @@ void haltSimulator()
   halt = true;
   Hardware->disable();
   Log->stopLogWithAnnounce();
-}
+}

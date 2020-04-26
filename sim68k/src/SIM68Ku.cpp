@@ -23,8 +23,8 @@
 #include "var.h"
 #include "FullscreenOptions.h"
 
-extern AnsiString errstr;
-extern AnsiString str;
+extern std:string errstr;
+extern std:string str;
 
 // global to this file
 bool done;
@@ -267,9 +267,9 @@ void __fastcall TForm1::runLoop()
 
 //---------------------------------------------------------------------------
 // Open program file
-void __fastcall TForm1::OpenFile(AnsiString name)
+void __fastcall TForm1::OpenFile(std:string name)
 {
-  AnsiString str;
+	std:string str;
   int addr;
 
   initSim();            // initialize simulator
@@ -395,7 +395,7 @@ void __fastcall TForm1::OpenDataExecute(TObject *Sender)
 // set modified flag and prompt before replacing current file?
 void __fastcall TForm1::WmDropFiles(TWMDropFiles& Message)
 {
-  AnsiString fileName, ext;
+	std:string fileName, ext;
   int size;
   char buff[MAX_PATH];                  // filename buffer
   int result = IDOK;
@@ -468,7 +468,7 @@ void __fastcall TForm1::RunExecute(TObject *Sender)
 void __fastcall TForm1::RunToCursorExecute(TObject *Sender)
 {
   int i, addr, Index;
-  AnsiString str;
+  std:string str;
 
   try{
     // get text from Highlighted line
@@ -655,9 +655,9 @@ void __fastcall TForm1::ListBox1DrawItem(TWinControl *Control, int Index,
       TRect &Rect, TOwnerDrawState State)
 {
   int i, tab, nSpaces, addr;
-  AnsiString str;
+  std::string str;
 
-  // note that we draw on the listbox’s canvas, not on the form
+  // note that we draw on the listboxï¿½s canvas, not on the form
   TCanvas *pCanvas = ((TListBox *)Control)->Canvas;
   pCanvas->FillRect(Rect); // clear the rectangle
 
@@ -692,7 +692,7 @@ void __fastcall TForm1::ListBox1DrawItem(TWinControl *Control, int Index,
 void __fastcall TForm1::breakPPaint(TObject *Sender)
 {
   int i, top, addr, Index, botIndex;
-  AnsiString str;
+  std::string str;
 
   // if ListBox is empty
   if (ListBox1->Items->Count == 0)
@@ -739,7 +739,7 @@ void __fastcall TForm1::breakPMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
   int i, addr, Index;
-  AnsiString str;
+  std::string  str;
 
   try{
     if (Button == mbLeft) {
@@ -785,7 +785,7 @@ void __fastcall TForm1::ClearAllPCBreakpoints1Click(TObject *Sender)
 void __fastcall TForm1::highlight()
 {
   int i, botIndex;
-  AnsiString str;
+  std::string  str;
 
   //ListBox1->ItemIndex = -1;   // remove highlight *ck 12-3-2005 for better macro behavior
 
@@ -815,7 +815,7 @@ void toUpper(string& str) {
 //---------------------------------------------------------------------------
 // search for searchStr in ListBox and highlight line if found
 // next = true to search for next match, false to search from top
-void __fastcall TForm1::find(AnsiString str, bool next)
+void __fastcall TForm1::find(std::string  str, bool next)
 {
   int botIndex;
   static int i = 3;
@@ -853,7 +853,7 @@ void __fastcall TForm1::find(AnsiString str, bool next)
 // check to see if str contains a machine code instruction
 // pre: str contains a line of code from the L68 file
 // post: returns true if instruction, false if not
-bool inline __fastcall TForm1::isInstruction(AnsiString &str)
+bool inline __fastcall TForm1::isInstruction(std::string  &str)
 {
   if (str.SubString(1,2) == "00" &&             // address
                  str[11] != ' ' &&              // data present
@@ -869,7 +869,7 @@ bool inline __fastcall TForm1::isInstruction(AnsiString &str)
 bool __fastcall TForm1::lineToLog()
 {
   int topIndex, botIndex, midIndex;
-  AnsiString str;
+  std::string  str;
   bool foundPC = false;
   const int TOP_INDEX = 3;
 
@@ -989,7 +989,7 @@ void __fastcall TForm1::FontDialogSimIOApply(TObject *Sender, HWND Wnd)
 // Load registers from screen
 void __fastcall TForm1::loadRegs()
 {
-  AnsiString str = "0x";
+  std::string  str = "0x";
 
   // load each bit of SR
   SR = 0;
@@ -1150,7 +1150,7 @@ void __fastcall TForm1::regA6KeyUp(TObject *Sender, WORD &Key,
 void __fastcall TForm1::regA7KeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
-  AnsiString str = "0x";
+  std::string  str = "0x";
   if (regSR->EditText[3] == '1') {   // if Supervisor mode
     regA8->Text = regA7->EditText;
     A[8] = StrToInt(str + regA8->EditText);
@@ -1165,7 +1165,7 @@ void __fastcall TForm1::regA7KeyUp(TObject *Sender, WORD &Key,
 void __fastcall TForm1::regUSKeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
-  AnsiString str = "0x";
+  std::string  str = "0x";
   if (regSR->EditText[3] == '0')    // if User mode
     regA7->Text = regUS->EditText;
   A[7] = StrToInt(str + regUS->EditText);
@@ -1176,7 +1176,7 @@ void __fastcall TForm1::regUSKeyUp(TObject *Sender, WORD &Key,
 void __fastcall TForm1::regA8KeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
-  AnsiString str = "0x";
+  std::string  str = "0x";
   if (regSR->EditText[3] == '1')   // if Supervisor mode
     regA7->Text = regA8->EditText;
   A[8] = StrToInt(str + regA8->EditText);
@@ -1202,7 +1202,7 @@ void __fastcall TForm1::Memory1Click(TObject *Sender)
 
 void __fastcall TForm1::FormShow(TObject *Sender)
 {
-  AnsiString fileName, ext, option;
+  std::string  fileName, ext, option;
 
   Form1->Caption = TITLE;       // set title
 
@@ -1255,7 +1255,7 @@ void __fastcall TForm1::FormResize(TObject *Sender)
 // Clear Cycles button pressed
 void __fastcall TForm1::ClearCyclesClick(TObject *Sender)
 {
-  AnsiString str;
+  std::string  str;
 
   cycles = 0;
   cyclesDisplay->Caption = str.sprintf("%u",cycles);
@@ -1322,7 +1322,7 @@ void __fastcall TForm1::BringToFront()
 void __fastcall TForm1::ListBox1DblClick(TObject *Sender)
 {
   int i, botIndex;
-  AnsiString str;
+  std::string  str;
 
   str = ListBox1->Items->Strings[ListBox1->ItemIndex];
   if (isInstruction(str))          // if instruction
@@ -1396,7 +1396,7 @@ void __fastcall TForm1::mmuFullscreenOptionsClick(TObject *Sender)
 
 void TForm1::OnDisplayChange(TWMDisplayChange& temp){
   //Form1->Left = Form1->Left;
-  //Application->MessageBox(static_cast<AnsiString>(Form1->Left).c_str(), NULL, MB_OK);
+  //Application->MessageBox(static_cast<std::string >(Form1->Left).c_str(), NULL, MB_OK);
 }
 
 //---------------------------------------------------------------------------
@@ -1431,7 +1431,7 @@ void __fastcall TForm1::SaveSettings()
 // saves simulator settings to file
 {
   try {
-    AnsiString str;
+    std::string  str;
     str = ExtractFilePath(Application->ExeName) + "sim68K.dat";
     char fileName[256];
     strcpy(fileName, str.c_str());        // fileName is path + sim68K.dat
@@ -1552,7 +1552,7 @@ void __fastcall TForm1::LoadSettings()
 {
   try {
     const int SIZE = 256;
-    AnsiString str;
+    std::string  str;
     str = ExtractFilePath(Application->ExeName) + "sim68K.dat";
     char fileName[SIZE];
     strcpy(fileName, str.c_str());      // fileName is path + sim68K.dat
@@ -2148,7 +2148,7 @@ void __fastcall TForm1::GotoPC1Click(TObject *Sender)
 
 void __fastcall TForm1::EASyBIN1Click(TObject *Sender)
 {
-  AnsiString easybin;
+  std::string  easybin;
   //run EASyBIN
   easybin = ExtractFilePath(Application->ExeName) + "EASyBIN.EXE";
   spawnl(P_NOWAITO, easybin.c_str(), ParamStr(0).c_str(), NULL);

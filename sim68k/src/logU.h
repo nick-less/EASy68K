@@ -32,25 +32,25 @@ __published:	// IDE-managed Components
         TLabel *MemLbl3;
         TMaskEdit *MemBytes;
         TButton *CancelBtn;
-        void __fastcall ELogOpenBtnClick(TObject *Sender);
-        void __fastcall OKBtnClick(TObject *Sender);
-        void __fastcall CancelBtnClick(TObject *Sender);
-        void __fastcall OLogOpenBtnClick(TObject *Sender);
-        void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
+        void  ELogOpenBtnClick(TObject *Sender);
+        void  OKBtnClick(TObject *Sender);
+        void  CancelBtnClick(TObject *Sender);
+        void  OLogOpenBtnClick(TObject *Sender);
+        void  FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
-        void __fastcall ELogTypeClick(TObject *Sender);
-        void __fastcall MemFromKeyPress(TObject *Sender, char &Key);
-        void __fastcall MemFromExit(TObject *Sender);
-        void __fastcall FormShow(TObject *Sender);
+        void  ELogTypeClick(TObject *Sender);
+        void  MemFromKeyPress(TObject *Sender, char &Key);
+        void  MemFromExit(TObject *Sender);
+        void  FormShow(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
-        __fastcall TLog(TComponent* Owner);
-        void __fastcall setLogFileNames(AnsiString name);
-        void __fastcall prepareLogFile();
-        void __fastcall stopLog();
-        void __fastcall stopLogWithAnnounce();
-        void __fastcall startLog();
-        void __fastcall addMessage(AnsiString msg);
+         TLog(TComponent* Owner);
+        void  setLogFileNames(AnsiString name);
+        void  prepareLogFile();
+        void  stopLog();
+        void  stopLogWithAnnounce();
+        void  startLog();
+        void  addMessage(AnsiString msg);
 
 
 };

@@ -159,4 +159,3 @@ int	(*(names[]))() =
                 ADD, BIT_FIELD, SHIFT_ROT, SHIFT_ROT, LINE1111
 		};
 
-

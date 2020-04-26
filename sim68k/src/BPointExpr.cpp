@@ -21,7 +21,7 @@ void setCount(int); bool isBreak(); bool isEnabled(); void isEnabled(bool);
 #include "extern.h"
 #include "BPointExpr.h"
 
-#include "BREAKPOINTSu.h"
+//#include "BREAKPOINTSu.h"
 
 // Default constructor
 BPointExpr::BPointExpr() {}

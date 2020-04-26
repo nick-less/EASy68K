@@ -179,7 +179,7 @@ int	DIVS()
 {
   int	reg;            //, overflow;
   long	remainder;
-  __int64 result64;
+  __int64_t result64;
 
   int error = eff_addr((long)WORD_MASK, DATA_ADDR, true);
   if (error)            // if address error
@@ -193,7 +193,7 @@ int	DIVS()
   if (source == 0)
     return (DIV_BY_ZERO);		// initiate exception processing
 
-  result64 = ((__int64)dest / source);
+  result64 = ((__int64_t)dest / source);
   if (result64 > 32767 || result64 < -32768)  // if overflow
     SR |= vbit;
   else {
@@ -605,5 +605,3 @@ inc_cyc (4);
 return SUCCESS;
 
 }
-
-

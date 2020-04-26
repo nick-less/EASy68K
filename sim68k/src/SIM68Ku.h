@@ -3,6 +3,7 @@
 #ifndef sim68KuH
 #define sim68KuH
 //---------------------------------------------------------------------------
+#include <string>
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
@@ -19,6 +20,9 @@
 #include <MPlayer.hpp>
 #include "findDialogS.h"
 #include <NMURL.hpp>
+
+extern TApplication * Application;
+
 
 //---------------------------------------------------------------------------
 class TForm1 : public TForm
@@ -192,130 +196,131 @@ __published:	// IDE-managed Components
         TMenuItem *N13;
         TMenuItem *GotoPC1;
         TMenuItem *EASyBIN1;
-        void __fastcall OpenExecute(TObject *Sender);
-        void __fastcall CloseExecute(TObject *Sender);
-        void __fastcall ExitExecute(TObject *Sender);
-        void __fastcall RunExecute(TObject *Sender);
-        void __fastcall StepExecute(TObject *Sender);
-        void __fastcall TraceExecute(TObject *Sender);
-        void __fastcall PauseExecute(TObject *Sender);
-        void __fastcall RewindExecute(TObject *Sender);
-        void __fastcall AboutExecute(TObject *Sender);
-        void __fastcall ListBox1DrawItem(TWinControl *Control, int Index,
+        void  OpenExecute(TObject *Sender);
+        void  CloseExecute(TObject *Sender);
+        void  ExitExecute(TObject *Sender);
+        void  RunExecute(TObject *Sender);
+        void  StepExecute(TObject *Sender);
+        void  TraceExecute(TObject *Sender);
+        void  PauseExecute(TObject *Sender);
+        void  RewindExecute(TObject *Sender);
+        void  AboutExecute(TObject *Sender);
+        void  ListBox1DrawItem(TWinControl *Control, int Index,
           TRect &Rect, TOwnerDrawState State);
-        void __fastcall ScrollBar1Change(TObject *Sender);
-        void __fastcall FormActivate(TObject *Sender);
-        void __fastcall FontSourceExecute(TObject *Sender);
-        void __fastcall FontOutputExecute(TObject *Sender);
-        void __fastcall FontDialogSourceApply(TObject *Sender, HWND Wnd);
-        void __fastcall regSRKeyPress(TObject *Sender, char &Key);
-        void __fastcall Stack1Click(TObject *Sender);
-        void __fastcall OutputWindow1Click(TObject *Sender);
-        void __fastcall regKeyPress(TObject *Sender, char &Key);
-        void __fastcall RegChange(TObject *Sender);
-        void __fastcall Memory1Click(TObject *Sender);
-        void __fastcall FormShow(TObject *Sender);
-        void __fastcall BreakPoints1Click(TObject *Sender);
-        void __fastcall FormResize(TObject *Sender);
-        void __fastcall breakPMouseDown(TObject *Sender,
+        void  ScrollBar1Change(TObject *Sender);
+        void  FormActivate(TObject *Sender);
+        void  FontSourceExecute(TObject *Sender);
+        void  FontOutputExecute(TObject *Sender);
+        void  FontDialogSourceApply(TObject *Sender, HWND Wnd);
+        void  regSRKeyPress(TObject *Sender, char &Key);
+        void  Stack1Click(TObject *Sender);
+        void  OutputWindow1Click(TObject *Sender);
+        void  regKeyPress(TObject *Sender, char &Key);
+        void  RegChange(TObject *Sender);
+        void  Memory1Click(TObject *Sender);
+        void  FormShow(TObject *Sender);
+        void  BreakPoints1Click(TObject *Sender);
+        void  FormResize(TObject *Sender);
+        void  breakPMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
-        void __fastcall breakPPaint(TObject *Sender);
-        void __fastcall ClearCyclesClick(TObject *Sender);
-        void __fastcall LogOutput1Click(TObject *Sender);
-        void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
-        void __fastcall ExceptionsEnabledClick(TObject *Sender);
-        void __fastcall HelpExecute(TObject *Sender);
-        void __fastcall ClearAllPCBreakpoints1Click(TObject *Sender);
-        void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
+        void  breakPPaint(TObject *Sender);
+        void  ClearCyclesClick(TObject *Sender);
+        void  LogOutput1Click(TObject *Sender);
+        void  FormClose(TObject *Sender, TCloseAction &Action);
+        void  ExceptionsEnabledClick(TObject *Sender);
+        void  HelpExecute(TObject *Sender);
+        void  ClearAllPCBreakpoints1Click(TObject *Sender);
+        void  FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
-        void __fastcall regSRChange(TObject *Sender);
-        void __fastcall regPCChange(TObject *Sender);
-        void __fastcall ListBox1DblClick(TObject *Sender);
-        void __fastcall AutoTraceExecute(TObject *Sender);
-        void __fastcall AutoTraceTimerTimer(TObject *Sender);
-        void __fastcall SimulatorOptionsClick(TObject *Sender);
-        void __fastcall OpenDataExecute(TObject *Sender);
-        void __fastcall regA7KeyUp(TObject *Sender, WORD &Key,
+        void  regSRChange(TObject *Sender);
+        void  regPCChange(TObject *Sender);
+        void  ListBox1DblClick(TObject *Sender);
+        void  AutoTraceExecute(TObject *Sender);
+        void  AutoTraceTimerTimer(TObject *Sender);
+        void  SimulatorOptionsClick(TObject *Sender);
+        void  OpenDataExecute(TObject *Sender);
+        void  regA7KeyUp(TObject *Sender, WORD &Key,
           TShiftState Shift);
-        void __fastcall regUSKeyUp(TObject *Sender, WORD &Key,
+        void  regUSKeyUp(TObject *Sender, WORD &Key,
           TShiftState Shift);
-        void __fastcall regA8KeyUp(TObject *Sender, WORD &Key,
+        void  regA8KeyUp(TObject *Sender, WORD &Key,
           TShiftState Shift);
-        void __fastcall regA6KeyUp(TObject *Sender, WORD &Key,
+        void  regA6KeyUp(TObject *Sender, WORD &Key,
           TShiftState Shift);
-        void __fastcall regA5KeyUp(TObject *Sender, WORD &Key,
+        void  regA5KeyUp(TObject *Sender, WORD &Key,
           TShiftState Shift);
-        void __fastcall regA4KeyUp(TObject *Sender, WORD &Key,
+        void  regA4KeyUp(TObject *Sender, WORD &Key,
           TShiftState Shift);
-        void __fastcall regA3KeyUp(TObject *Sender, WORD &Key,
+        void  regA3KeyUp(TObject *Sender, WORD &Key,
           TShiftState Shift);
-        void __fastcall regA2KeyUp(TObject *Sender, WORD &Key,
+        void  regA2KeyUp(TObject *Sender, WORD &Key,
           TShiftState Shift);
-        void __fastcall regA1KeyUp(TObject *Sender, WORD &Key,
+        void  regA1KeyUp(TObject *Sender, WORD &Key,
           TShiftState Shift);
-        void __fastcall regA0KeyUp(TObject *Sender, WORD &Key,
+        void  regA0KeyUp(TObject *Sender, WORD &Key,
           TShiftState Shift);
-        void __fastcall Hardware1Click(TObject *Sender);
-        void __fastcall RunToCursorExecute(TObject *Sender);
-        void __fastcall ReloadExecute(TObject *Sender);
-        void __fastcall FontDialogSimIOApply(TObject *Sender, HWND Wnd);
-        void __fastcall FontPrinterExecute(TObject *Sender);
-        void __fastcall PrinterSetup1Click(TObject *Sender);
-        void __fastcall mmuFullscreenOptionsClick(TObject *Sender);
-        void __fastcall regPCDblClick(TObject *Sender);
-        void __fastcall regDblClick(TObject *Sender);
-        void __fastcall LogStartExecute(TObject *Sender);
-        void __fastcall LogStopExecute(TObject *Sender);
-        void __fastcall BitFieldEnabledClick(TObject *Sender);
-        void __fastcall WindowSizeClick(TObject *Sender);
-        void __fastcall OutputWindowTextWrap1Click(TObject *Sender);
-        void __fastcall SearchExecute(TObject *Sender);
-        void __fastcall GotoPC1Click(TObject *Sender);
-        void __fastcall EASyBIN1Click(TObject *Sender);
+        void  Hardware1Click(TObject *Sender);
+        void  RunToCursorExecute(TObject *Sender);
+        void  ReloadExecute(TObject *Sender);
+        void  FontDialogSimIOApply(TObject *Sender, HWND Wnd);
+        void  FontPrinterExecute(TObject *Sender);
+        void  PrinterSetup1Click(TObject *Sender);
+        void  mmuFullscreenOptionsClick(TObject *Sender);
+        void  regPCDblClick(TObject *Sender);
+        void  regDblClick(TObject *Sender);
+        void  LogStartExecute(TObject *Sender);
+        void  LogStopExecute(TObject *Sender);
+        void  BitFieldEnabledClick(TObject *Sender);
+        void  WindowSizeClick(TObject *Sender);
+        void  OutputWindowTextWrap1Click(TObject *Sender);
+        void  SearchExecute(TObject *Sender);
+        void  GotoPC1Click(TObject *Sender);
+        void  EASyBIN1Click(TObject *Sender);
 private:	// User declarations
         int startPC;
         void OnDisplayChange(TWMDisplayChange&);
-        void __fastcall WmDropFiles(TWMDropFiles& Message);     // handle drag-n-drop from explorer
+        void  WmDropFiles(TWMDropFiles& Message);     // handle drag-n-drop from explorer
 
 public:		// User declarations
-        __fastcall TForm1(TComponent* Owner);
-        __fastcall ~TForm1();
-        void __fastcall BringToFront();
-        void __fastcall OpenFile(AnsiString name);
-        void __fastcall setMenuActive();
-        void __fastcall setMenuInactive();
-        void __fastcall setMenuTrace();
-        void __fastcall setMenuTask19();
-        void __fastcall restoreMenuTask19();
-        void __fastcall WindowSizeChecked();
+         TForm1(TComponent* Owner);
+         ~TForm1();
+        void  BringToFront();
+        void  OpenFile(AnsiString  name);
+        void  setMenuActive();
+        void  setMenuInactive();
+        void  setMenuTrace();
+        void  setMenuTask19();
+        void  restoreMenuTask19();
+        void  WindowSizeChecked();
 
 
-        void __fastcall loadRegs();
-//        void __fastcall runLoop(TObject*, bool &done);
-        void __fastcall runLoop();
-        void __fastcall highlight();
-        void __fastcall find(AnsiString searchStr, bool next);
+        void  loadRegs();
+//        void  runLoop(TObject*, bool &done);
+        void  runLoop();
+        void  highlight();
+        void  find(AnsiString  searchStr, bool next);
 
-        bool inline __fastcall isInstruction(AnsiString &str);
+        bool inline  isInstruction(AnsiString  &str);
 
-        bool __fastcall lineToLog();
-        void __fastcall displayHelp(char * context);
-//        void __fastcall RunAfterSTOP();
-        void __fastcall LoadSettings();
-        void __fastcall SaveSettings();
-        void __fastcall defaultSettings();
+        bool  lineToLog();
+        void  displayHelp(const char * context);
+//        void  RunAfterSTOP();
+        void  LoadSettings();
+        void  SaveSettings();
+        void  defaultSettings();
 
         // needed for HTML help
         HWND m_hWindow;
-        AnsiString m_asHelpFile;
+        AnsiString  m_asHelpFile;
         DWORD m_Cookie;
 
+/*
         BEGIN_MESSAGE_MAP
           VCL_MESSAGE_HANDLER(WM_DISPLAYCHANGE, TWMDisplayChange, OnDisplayChange);
           // message map for handling drag-n-drop from explorer
           MESSAGE_HANDLER(WM_DROPFILES, TWMDropFiles, WmDropFiles)
         END_MESSAGE_MAP(TForm);
-
+*/
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm1 *Form1;

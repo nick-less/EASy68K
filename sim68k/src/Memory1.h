@@ -7,7 +7,6 @@
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
-#include "CSPIN.h"
 #include <ExtCtrls.hpp>
 #include <Mask.hpp>
 #include <Dialogs.hpp>

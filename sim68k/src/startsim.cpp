@@ -14,11 +14,9 @@ This file contains the function 'main()' and various screen management
 ***************************************************************************/
 
 #include <stdio.h>
-#include <iostream.h>
-#include <conio.h>
 #include "extern.h"
 #include "SIM68Ku.h"
-#include "Stack1.h"
+#include "stack1.h"
 #include "Memory1.h"
 #include "simIOu.h"
 #include "hardwareu.h"
@@ -129,7 +127,7 @@ void initSim()                   // initialization for the simulator
 
 void scrshow() 	        // update register display
 {
-  String str;
+  AnsiString str;
   Form1->regD0->Text = str.sprintf("%08lX",D[0]);
   Form1->regD1->Text = str.sprintf("%08lX",D[1]);
   Form1->regD2->Text = str.sprintf("%08lX",D[2]);
@@ -173,8 +171,3 @@ void scrshow() 	        // update register display
     MemoryFrm->Repaint();
   }
 }
-
-
-
-
-

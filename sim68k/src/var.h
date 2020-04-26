@@ -41,7 +41,7 @@ AnsiString errstr, str;
 // is being performed on a 68000 register or 68000 memory.
 // 68000 registers
 long 	D[D_REGS], A[A_REGS];
-long 	PC;
+unsigned long 	PC;
 short	SR;
 
 long	global_temp;	// to hold an immediate data operand

@@ -156,7 +156,12 @@ int	SHIFT_ROT()
           xflag = (SR & xbit) >> 4;
 	  for (counter = 1; counter <= shift_count; counter++) {
 	    carry = EV1 & 1;
-            (uint)EV1 >>= 1;
+
+        // (uint)EV1 >>= 1;
+        unsigned int tmp = EV1;
+        tmp >>= 1;
+        EV1 = tmp;
+
 	    if(xflag) EV1 |= cmask;
             xflag = carry;
 	  }
@@ -234,7 +239,8 @@ int	BIT_OP()
   if (inst & 0x100)
     bit_no = D[(inst >> 9) & 0x07];
   else	{
-    mem_request (&PC, (long)WORD_MASK, &(static_cast<long>(bit_no))); // get bit_no from instruction
+	long tmp = static_cast<long>(bit_no);
+    mem_request (&PC, (long)WORD_MASK, &tmp); // get bit_no from instruction
     bit_no = bit_no & 0xff;
   }
   mem_reg = (inst & 0x38);
@@ -491,6 +497,3 @@ int	BIT_FIELD()
   }
   return error;
 }
-
-
-

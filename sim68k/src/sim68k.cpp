@@ -9,6 +9,7 @@
 
 #include "extern.h"
 #include <iostream>
+#include "SIM68Ku.h"
 
 #pragma hdrstop
 /*
@@ -26,7 +27,7 @@
  USEFORM("findDialogS.cpp", findDialogFrm);
  */
 
-using namespace Gtk;
+TApplication * Application;
 
 int main(int argc, char *argv[]) {
 	auto app = Gtk::Application::create(argc, argv, "org.easy68k.sim68k");
@@ -41,7 +42,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	m_refBuilder->get_widget("mainWindow", mainWindow);
-
+	Application = new TApplication();
 	mainWindow->show_all();
 
 	return app->run(*mainWindow);

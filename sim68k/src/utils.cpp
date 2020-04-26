@@ -21,12 +21,15 @@ The routines are :
 #include "SIM68Ku.h"
 #include "hardwareu.h"
 #include "Memory1.h"
-#include "PROTO.H"
+#include "proto.h"
 
 extern int ROMStart, ROMEnd, ReadStart, ReadEnd;
 extern int ProtectedStart, ProtectedEnd, InvalidStart, InvalidEnd;
 extern bool ROMMap, ReadMap, ProtectedMap, InvalidMap;
 extern int seg7loc, LEDloc, switchLoc, pbLoc;
+
+
+
 
 /**************************** int to_2s_comp () ****************************
 
@@ -528,19 +531,23 @@ int mem_request (long *loc, long size, long *result)
 {
 	int	req_result;
 
-	if (size == LONG_MASK)
+	if (size == LONG_MASK) {
 		req_result = mem_req (*loc, LONG_MASK, result);
-	else
+	} else {
 		req_result = mem_req (*loc, (long) WORD_MASK, result);
+	}
 
-	if (size == BYTE_MASK)
+	if (size == BYTE_MASK) {
 		*result = *result & 0xff;
+	}
 
-	if (!req_result)
-		if (size == LONG_MASK)
+	if (!req_result) {
+		if (size == LONG_MASK) {
 			*loc += 4;
-		else
+		} else {
 			*loc += 2;
+		}
+	}
 
 	return req_result;
 
@@ -580,10 +587,10 @@ void put (long *dest, long source, long size)
 //    *dest = (source & size) | (*dest & ~size);
 
   // if dest is register
-  if ( ( (int)dest >= (int)&D[0] ) && ( (int)dest < (int)&inst ) )
+  if ( ( (long long)dest >= (long long)&D[0] ) && ( (long long)dest < (long long)&inst ) )
     *dest = (source & size) | (*dest & ~size);
   else          // else dest is memory
-    mem_put (source, (int) ((int)dest - (int)&memory[0]), size);
+    mem_put (source, (int) ((long long)dest - (long long)&memory[0]), size);
 }
 
 /**************************** int value_of() *******************************
@@ -612,10 +619,10 @@ void value_of (long *EA, long *EV, long size)
 //    mem_req ( (int) ((int)EA - (int)&memory[0]), size, EV);
 
   // if EA is register
-  if ( ( (int)EA >= (int)&D[0] ) && ( (int)EA < (int)&inst ) )
+  if ( ( (long long)EA >= (long long)&D[0] ) && ( (long long)EA < (long long)&inst ) )
     *EV = *EA & size;
   else          // else EA is memory
-    mem_req ( (int) ((int)EA - (int)&memory[0]), size, EV);
+    mem_req ( (int) ((long long)EA - (long long)&memory[0]), size, EV);
 }
 
 
@@ -880,5 +887,3 @@ ushort flip(ushort &n)
 {
   return flip(&n);
 }
-
-

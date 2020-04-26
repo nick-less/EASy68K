@@ -6,13 +6,13 @@
 #define defH
 
 #include <stdio.h>
+#include <sys/types.h>
 #pragma hdrstop
 
 /***************************** 68000 SIMULATOR ****************************
 File Name: DEF.H
 This file contains definitions used in the simulator source files.
 ***************************************************************************/
-#define uint unsigned int
 #define ushort unsigned short
 #define uchar unsigned char
 //typedef unsigned int uint;

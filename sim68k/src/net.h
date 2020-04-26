@@ -4,7 +4,7 @@
 #ifndef netH
 #define netH
 
-#include <winsock.h>
+#include <sys/socket.h>
 #include <stdio.h>
 
 // network
@@ -39,15 +39,15 @@ const int NET_TCP = 1;
 const int IP_SIZE = 16;
 
 // prototypes
-int __fastcall netInit(int port, int protocol);  // initialize network
-int __fastcall netCreateServer(int port, int protocol);  // setup network for server
-int __fastcall netCreateClient(char *server, int port, int protocol);   // setup network for client
-int __fastcall netLocalIP(char *localIP);            // returns localIP
-int __fastcall netSendData(char *data, unsigned int &size, char *remoteIP); // sends network data
-int __fastcall netReadData(char *data, unsigned int &size, char *senderIP); // returns network data
-int __fastcall netSendData(char *data, unsigned int &size, char *remoteIP, USHORT port); // sends network data
-int __fastcall netReadData(char *data, unsigned int &size, char *senderIP, USHORT &port); // returns network data
-int __fastcall netCloseSockets();
+int  netInit(int port, int protocol);  // initialize network
+int  netCreateServer(int port, int protocol);  // setup network for server
+int  netCreateClient(char *server, int port, int protocol);   // setup network for client
+int  netLocalIP(char *localIP);            // returns localIP
+int  netSendData(char *data, unsigned int &size, char *remoteIP); // sends network data
+int  netReadData(char *data, unsigned int &size, char *senderIP); // returns network data
+int  netSendData(char *data, unsigned int &size, char *remoteIP, unsigned short port); // sends network data
+int  netReadData(char *data, unsigned int &size, char *senderIP, unsigned short &port); // returns network data
+int  netCloseSockets();
 
 
 //---------------------------------------------------------------------------

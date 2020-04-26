@@ -4,8 +4,6 @@
 //           http://www.monroeccc.edu/ckelly
 //---------------------------------------------------------------------------
 
-#include <vcl.h>
-#include <fstream.h>
 #pragma hdrstop
 
 #include "logU.h"
@@ -13,7 +11,7 @@
 #include "extern.h"
 #include "simIOu.h"
 #include "Memory1.h"
-#include "Stack1.h"
+#include "stack1.h"
 #include "hardwareu.h"
 #include "LogfileDialogu.h"
 
@@ -34,13 +32,13 @@ int eLogType, oLogType;
 AnsiString eLogName, oLogName, memoryFrom, memoryBytes;
 
 //---------------------------------------------------------------------------
-__fastcall TLog::TLog(TComponent* Owner)
+ TLog::TLog(TComponent* Owner)
         : TForm(Owner)
 {
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TLog::ELogOpenBtnClick(TObject *Sender)
+void  TLog::ELogOpenBtnClick(TObject *Sender)
 {
   // select log file
   if(ELogSaveDlg->Execute())
@@ -48,7 +46,7 @@ void __fastcall TLog::ELogOpenBtnClick(TObject *Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TLog::OLogOpenBtnClick(TObject *Sender)
+void  TLog::OLogOpenBtnClick(TObject *Sender)
 {
   // select log file
   if(OLogSaveDlg->Execute())
@@ -56,7 +54,7 @@ void __fastcall TLog::OLogOpenBtnClick(TObject *Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TLog::setLogFileNames(AnsiString name)
+void  TLog::setLogFileNames(AnsiString name)
 {
   // Set ELogFileName & OLogFileName
   if(logging)
@@ -73,7 +71,7 @@ void __fastcall TLog::setLogFileNames(AnsiString name)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TLog::OKBtnClick(TObject *Sender)
+void  TLog::OKBtnClick(TObject *Sender)
 {
   ElogFlag = ELogType->ItemIndex;
   OlogFlag = OLogType->ItemIndex;
@@ -85,7 +83,7 @@ void __fastcall TLog::OKBtnClick(TObject *Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TLog::CancelBtnClick(TObject *Sender)
+void  TLog::CancelBtnClick(TObject *Sender)
 {
   // restore any changes made
   ELogType->ItemIndex = eLogType;
@@ -100,7 +98,7 @@ void __fastcall TLog::CancelBtnClick(TObject *Sender)
 
 //--------------------------------------------------------------------------
 // prepare log files
-void __fastcall TLog::prepareLogFile()
+void  TLog::prepareLogFile()
 {
   AnsiString str;
   try {
@@ -199,7 +197,7 @@ void __fastcall TLog::prepareLogFile()
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TLog::stopLog()
+void  TLog::stopLog()
 {
   if (logging) {        // if log in progress
     fclose(ElogFile);   // close log file
@@ -214,7 +212,7 @@ void __fastcall TLog::stopLog()
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TLog::stopLogWithAnnounce()
+void  TLog::stopLogWithAnnounce()
 {
   if (logging){
     Application->MessageBox("Current Log Stopped.", "Information", MB_OK);
@@ -224,7 +222,7 @@ void __fastcall TLog::stopLogWithAnnounce()
 
 //---------------------------------------------------------------------------
 
-void __fastcall TLog::startLog()
+void  TLog::startLog()
 {
   prepareLogFile();
   logging = true;
@@ -236,7 +234,7 @@ void __fastcall TLog::startLog()
 //---------------------------------------------------------------------------
 
 
-void __fastcall TLog::FormKeyDown(TObject *Sender, WORD &Key,
+void  TLog::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
    if (Key == VK_F1)
@@ -244,7 +242,7 @@ void __fastcall TLog::FormKeyDown(TObject *Sender, WORD &Key,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TLog::ELogTypeClick(TObject *Sender)
+void  TLog::ELogTypeClick(TObject *Sender)
 {
   if (ELogType->ItemIndex == INST_REG_MEM) { // if "Instruction, Registers and Memory"
     MemRange->Show();
@@ -254,7 +252,7 @@ void __fastcall TLog::ELogTypeClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TLog::MemFromKeyPress(TObject *Sender, char &Key)
+void  TLog::MemFromKeyPress(TObject *Sender, char &Key)
 {
   if ( (Key >= '0' && Key <= '9') ||
        (toupper(Key) >= 'A' && toupper(Key) <= 'F') )
@@ -266,7 +264,7 @@ void __fastcall TLog::MemFromKeyPress(TObject *Sender, char &Key)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TLog::MemFromExit(TObject *Sender)
+void  TLog::MemFromExit(TObject *Sender)
 {
   AnsiString str = "0x";
   int addr = StrToInt(str + MemFrom->EditText);
@@ -275,7 +273,7 @@ void __fastcall TLog::MemFromExit(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TLog::FormShow(TObject *Sender)
+void  TLog::FormShow(TObject *Sender)
 {
   eLogType = ELogType->ItemIndex;
   oLogType = OLogType->ItemIndex;
@@ -286,10 +284,10 @@ void __fastcall TLog::FormShow(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TLog::addMessage(AnsiString msg)
+void  TLog::addMessage(AnsiString msg)
 {
   if (logging && eLogType)
-    fprintf(ElogFile, msg.c_str());
+    fprintf(ElogFile, "%s", msg.c_str());
   if (logging && oLogType)
-    fprintf(OlogFile, msg.c_str());
+    fprintf(OlogFile, "%s", msg.c_str());
 }
