@@ -18,6 +18,7 @@ void setCount(int); bool isBreak(); bool isEnabled(); void isEnabled(bool);
 ***************************************************************************/
 
 #include <assert.h>
+#include <string>
 #include "extern.h"
 #include "BPointExpr.h"
 

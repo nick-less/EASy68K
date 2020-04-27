@@ -12,7 +12,7 @@ expression information entered manually by the user.
 ***************************************************************************/
 
 #pragma hdrstop
-
+#include <string>
 #include "BPoint.h"
 
 #ifndef BPOINT_EXPR

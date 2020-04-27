@@ -13,7 +13,8 @@
 #define HWND void*
 #define TWMDisplayChange int
 #define TWMDropFiles int
-
+#define mbOK 1
+#define mtInformation 1
 
 enum class TCloseAction : unsigned char { caNone, caHide, caFree, caMinimize };
 
@@ -49,6 +50,7 @@ public:
         AnsiString UpperCase () { AnsiString str; std::transform(str.begin(), str.end(),str.begin(), ::toupper); return str;}
 };
 
+AnsiString ChangeFileExt(const AnsiString FileName, const AnsiString Extension);
 
 
 class TPersistent : public TObject {
