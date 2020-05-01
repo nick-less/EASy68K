@@ -37,6 +37,7 @@ add_custom_command(OUTPUT resource ALL DEPENDS ${RESOURCE_FILE})
 
 add_executable(sim68k 
 	src/sim68k.cpp 
+	src/SIM68Ku.cpp 
 	src/run.cpp 
 	src/startsim.cpp 
 	src/logU.cpp 

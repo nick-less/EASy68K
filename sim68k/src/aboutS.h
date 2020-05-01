@@ -2,16 +2,13 @@
 #ifndef aboutSH
 #define aboutSH
 //----------------------------------------------------------------------------
-#include <vcl\System.hpp>
-#include <vcl\Windows.hpp>
-#include <vcl\SysUtils.hpp>
-#include <vcl\Classes.hpp>
-#include <vcl\Graphics.hpp>
-#include <vcl\Forms.hpp>
-#include <vcl\Controls.hpp>
-#include <vcl\StdCtrls.hpp>
-#include <vcl\Buttons.hpp>
-#include <vcl\ExtCtrls.hpp>
+#include <Classes.hpp>
+#include <Graphics.hpp>
+#include <Forms.hpp>
+#include <Controls.hpp>
+#include <StdCtrls.hpp>
+#include <Buttons.hpp>
+#include <ExtCtrls.hpp>
 //----------------------------------------------------------------------------
 class TAboutFrm : public TForm
 {
@@ -27,12 +24,12 @@ __published:
         TLabel *Label3;
         TLabel *Label5;
         TLabel *Label4;
-        void __fastcall FormShow(TObject *Sender);
-        void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
+        void  FormShow(TObject *Sender);
+        void  FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
 private:
 public:
-	virtual __fastcall TAboutFrm(TComponent* AOwner);
+	virtual  TAboutFrm(TComponent* AOwner);
 };
 //----------------------------------------------------------------------------
 extern PACKAGE TAboutFrm *AboutFrm;

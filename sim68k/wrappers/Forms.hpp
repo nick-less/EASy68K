@@ -19,7 +19,7 @@ class TScrollingWinControl : public TWinControl {
 class TCustomForm : public TScrollingWinControl {
 public:
 	 virtual void Show(void);
-	 virtual void ShowModal(void);
+	 virtual int ShowModal(void);
 	 virtual void Close(void);
 };
 
@@ -38,8 +38,10 @@ public:
 
 class TApplication : public TComponent {
 public:
+	AnsiString ExeName;
 	virtual void ProcessMessages(void) {};
 	virtual int MessageBox(const char * Text, const char * Caption, int Flags = 0x0)	{return 0;}
+
 };
 
 #endif

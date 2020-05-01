@@ -88,6 +88,10 @@ int TRAPV(void );
 int LINE1010();        //CK v2.3
 int LINE1111();        //CK v2.3
 
+
+void Beep();
+
+
 void    at(int y,int x);
 char    chk_buf(void );
 int     gethelp(void );

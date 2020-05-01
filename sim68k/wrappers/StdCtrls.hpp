@@ -42,7 +42,8 @@ class TCustomListBox : public TCustomMultiSelectListControl {
 };
 
 class TListBox : public TCustomListBox {
-
+public:
+	TStrings *Items;
 };
 
 

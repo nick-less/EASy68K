@@ -21,6 +21,7 @@ public:
 	 int StrToInt(std::string s) { return std::stoi(s);}
 
 	 virtual void Show(void);
+	 virtual int ShowModal(void);
 	 virtual void Hide(void);
 
 };

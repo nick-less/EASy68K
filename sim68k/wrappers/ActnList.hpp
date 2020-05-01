@@ -10,6 +10,7 @@ class TCustomAction : public TContainedAction {
 class TAction : public TCustomAction {
 public:
 	bool Enabled = true;
+	int ShortCut = 0;
 };
 
 class TCustomActionList : public TContainedActionList {

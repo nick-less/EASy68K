@@ -4,6 +4,9 @@
 #include <Classes.hpp>
 #include <Graphics.hpp>
 
+ int  MessageDlg(const AnsiString Msg, int DlgType, int Buttons, int HelpCtx);
+void  ShowMessage(const AnsiString Msg);
+
 class TCommonDialog : public TComponent {
 public:
 	bool Execute(void);
@@ -15,6 +18,8 @@ public:
 };
 
 class TOpenDialog : public TCommonDialog {
+public:
+	AnsiString FileName;
 
 };
 

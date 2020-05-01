@@ -3,16 +3,12 @@
 //           www.easy68k.com
 //---------------------------------------------------------------------------
 
-#include <vcl.h>
-#include <fstream.h>
-#include <process.h>
 #include <string>
 #pragma hdrstop
 
-#include "HtmlHelp.h"
 #include "help.h"
 #include "SIM68Ku.h"
-#include "Stack1.h"
+#include "stack1.h"
 #include "Memory1.h"
 #include "simIOu.h"
 #include "BREAKPOINTSu.h"
@@ -23,14 +19,14 @@
 #include "var.h"
 #include "FullscreenOptions.h"
 
-extern std:string errstr;
-extern std:string str;
+extern AnsiString errstr;
+extern AnsiString str;
 
 // global to this file
 bool done;
 bool clRun = false;
 bool disableKeyCommands = false;
-String HeadingStr = " Address  --------Code---------   Line -----------Source----------->>";
+AnsiString HeadingStr = " Address  --------Code---------   Line -----------Source----------->>";
 const int HEADING_LIMIT = 41;   // horizontal scroll limit for above heading
 
 // save shortcuts here for trap task 19 restore
@@ -62,7 +58,7 @@ TForm1 *Form1;
 
 // typedef for the HtmlHelp() function
 
-typedef HWND WINAPI (*HTML_HELP_PROC)(HWND, LPCSTR, UINT, DWORD_PTR);
+//typedef HWND WINAPI (*HTML_HELP_PROC)(HWND, LPCSTR, UINT, DWORD_PTR);
 
 // global variables the HTML Help libary
 
@@ -71,9 +67,14 @@ HTML_HELP_PROC __HtmlHelp;  // function pointer for the HtmlHelp() function. Not
                             // that you cannot name it HtmlHelp because that would
                             // create a conflict with the declaration in htmlhelp.h
 
+bool FileExists(AnsiString filename) {
+	return false;
+}
+
 //---------------------------------------------------------------------------
-bool __fastcall LoadHtmlHelp()
+bool  LoadHtmlHelp()
 {
+	/*
   try {
     HKEY HHKey;
     DWORD PathSize = 255;
@@ -114,12 +115,13 @@ bool __fastcall LoadHtmlHelp()
     ShowMessage("Error loading HTML help.");
     return false;
   }
+  */
 }
 
 //---------------------------------------------------------------------------
 // Form1 Constructor
 //---------------------------------------------------------------------------
-__fastcall TForm1::TForm1(TComponent* Owner)
+ TForm1::TForm1(TComponent* Owner)
         : TForm(Owner)
 {
   runMode = false;
@@ -177,7 +179,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
 //---------------------------------------------------------------------------
 // Form1 Destructor
 //---------------------------------------------------------------------------
-__fastcall TForm1::~TForm1()
+ TForm1::~TForm1()
 {
   try{
     if (memory != NULL)
@@ -208,6 +210,7 @@ __fastcall TForm1::~TForm1()
     is done in this code (doing this results in HH_CLOSE_ALL not spawning a
     secondary thread but using the calling thread, eliminating the problem).
     */
+    /*
     if (HHLibrary != 0)
     {
       __HtmlHelp(0, NULL, HH_CLOSE_ALL, 0);
@@ -216,6 +219,7 @@ __fastcall TForm1::~TForm1()
       ::FreeLibrary(HHLibrary);
       HHLibrary = 0;
     }
+    */
   }
   catch(...)
   {
@@ -227,7 +231,7 @@ __fastcall TForm1::~TForm1()
 
 //---------------------------------------------------------------------------
 // Close the Form
-void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &Action)
+void  TForm1::FormClose(TObject *Sender, TCloseAction &Action)
 {
   runMode = false;
   SaveSettings();               // save environment settings
@@ -236,7 +240,7 @@ void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &Action)
 
 //---------------------------------------------------------------------------
 // Exit
-void __fastcall TForm1::ExitExecute(TObject *Sender)
+void  TForm1::ExitExecute(TObject *Sender)
 {
   runMode = false;
   SaveSettings();               // save environment settings
@@ -246,7 +250,7 @@ void __fastcall TForm1::ExitExecute(TObject *Sender)
 
 //---------------------------------------------------------------------------
 // This is the function that runs the 68000 program
-void __fastcall TForm1::runLoop()
+void  TForm1::runLoop()
 {
   static bool running = false;
   if (running)          // prevent nested calls
@@ -267,9 +271,9 @@ void __fastcall TForm1::runLoop()
 
 //---------------------------------------------------------------------------
 // Open program file
-void __fastcall TForm1::OpenFile(std:string name)
+void  TForm1::OpenFile(AnsiString name)
 {
-	std:string str;
+	AnsiString str;
   int addr;
 
   initSim();            // initialize simulator
@@ -365,7 +369,7 @@ void __fastcall TForm1::OpenFile(std:string name)
 //---------------------------------------------------------------------------
 // Open program file
 // Sets ELogFileName & OLogFileName if program file is loaded
-void __fastcall TForm1::OpenExecute(TObject *Sender)
+void  TForm1::OpenExecute(TObject *Sender)
 {
   BreaksFrm->cbpoint(-1);  // clear all break points
   if (OpenDialog1->Execute()) {
@@ -376,7 +380,7 @@ void __fastcall TForm1::OpenExecute(TObject *Sender)
 
 //---------------------------------------------------------------------------
 // Open Data file
-void __fastcall TForm1::OpenDataExecute(TObject *Sender)
+void  TForm1::OpenDataExecute(TObject *Sender)
 {
   try {
     if (OpenDialog1->Execute())
@@ -393,9 +397,9 @@ void __fastcall TForm1::OpenDataExecute(TObject *Sender)
 // handler for drag-n-drop from explorer
 // should dropped files be added as data?
 // set modified flag and prompt before replacing current file?
-void __fastcall TForm1::WmDropFiles(TWMDropFiles& Message)
+void  TForm1::WmDropFiles(TWMDropFiles& Message)
 {
-	std:string fileName, ext;
+	AnsiString fileName, ext;
   int size;
   char buff[MAX_PATH];                  // filename buffer
   int result = IDOK;
@@ -423,7 +427,7 @@ void __fastcall TForm1::WmDropFiles(TWMDropFiles& Message)
 
 //---------------------------------------------------------------------------
 // Close Open File
-void __fastcall TForm1::CloseExecute(TObject *Sender)
+void  TForm1::CloseExecute(TObject *Sender)
 {
   if((Application->MessageBox
   ("The current debug environment will be lost, click OK to continue.",
@@ -438,7 +442,7 @@ void __fastcall TForm1::CloseExecute(TObject *Sender)
 
 //---------------------------------------------------------------------------
 // Run
-void __fastcall TForm1::RunExecute(TObject *Sender)
+void  TForm1::RunExecute(TObject *Sender)
 {
   setMenuTrace();               // disable some commands
   BreaksFrm->resetDebug();      // Reset break condition counters
@@ -457,7 +461,7 @@ void __fastcall TForm1::RunExecute(TObject *Sender)
 //---------------------------------------------------------------------------
 // Run after being halted by a STOP instruction
 // This routine is called after an IRQ or Hardware Reset
-//void __fastcall TForm1::RunAfterSTOP()
+//void  TForm1::RunAfterSTOP()
 //{
 //  runMode = true;               // enable runLoop()
 //  runModeSave = runMode;        // save current runMode
@@ -465,10 +469,10 @@ void __fastcall TForm1::RunExecute(TObject *Sender)
 //}
 
 //---------------------------------------------------------------------------
-void __fastcall TForm1::RunToCursorExecute(TObject *Sender)
+void  TForm1::RunToCursorExecute(TObject *Sender)
 {
   int i, addr, Index;
-  std:string str;
+  AnsiString str;
 
   try{
     // get text from Highlighted line
@@ -498,7 +502,7 @@ void __fastcall TForm1::RunToCursorExecute(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::StepExecute(TObject *Sender)
+void  TForm1::StepExecute(TObject *Sender)
 {
   setMenuTrace();               // disable some commands
   trace = true;
@@ -512,7 +516,7 @@ void __fastcall TForm1::StepExecute(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::TraceExecute(TObject *Sender)
+void  TForm1::TraceExecute(TObject *Sender)
 {
   setMenuTrace();               // disable some commands
   trace = true;
@@ -522,7 +526,7 @@ void __fastcall TForm1::TraceExecute(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::PauseExecute(TObject *Sender)
+void  TForm1::PauseExecute(TObject *Sender)
 {
   trace = true;
   sstep = false;
@@ -539,7 +543,7 @@ void __fastcall TForm1::PauseExecute(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::RewindExecute(TObject *Sender)
+void  TForm1::RewindExecute(TObject *Sender)
 {
   AutoTraceTimer->Enabled = false;      // turn off auto trace
   PC = startPC;
@@ -550,14 +554,14 @@ void __fastcall TForm1::RewindExecute(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TForm1::AboutExecute(TObject *Sender)
+void  TForm1::AboutExecute(TObject *Sender)
 {
   AboutFrm->ShowModal();
 }
 
 //---------------------------------------------------------------------------
 // Set the menu and toolbar to work with an active source file
-void __fastcall TForm1::setMenuActive()
+void  TForm1::setMenuActive()
 {
   if (AutoTraceTimer->Enabled)
     return;
@@ -582,7 +586,7 @@ void __fastcall TForm1::setMenuActive()
 
 //---------------------------------------------------------------------------
 // Set the menu and toolbar to inactive
-void __fastcall TForm1::setMenuInactive()
+void  TForm1::setMenuInactive()
 {
   Open1->Enabled = false;
   ToolOpen->Enabled = false;
@@ -605,7 +609,7 @@ void __fastcall TForm1::setMenuInactive()
 
 //---------------------------------------------------------------------------
 // Set the menu and toolbar to trace mode
-void __fastcall TForm1::setMenuTrace()
+void  TForm1::setMenuTrace()
 {
   setMenuInactive();            // disable some debug commands
   Pause1->Enabled = true;       // except for reset and pause
@@ -616,7 +620,7 @@ void __fastcall TForm1::setMenuTrace()
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TForm1::setMenuTask19()
+void  TForm1::setMenuTask19()
 {
   Open->ShortCut = 0;           // disable shortcut
   Run->ShortCut = 0;
@@ -633,7 +637,7 @@ void __fastcall TForm1::setMenuTask19()
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TForm1::restoreMenuTask19()
+void  TForm1::restoreMenuTask19()
 {
   Open->ShortCut = openCut;
   Run->ShortCut = runCut;
@@ -651,7 +655,7 @@ void __fastcall TForm1::restoreMenuTask19()
 
 //---------------------------------------------------------------------------
 // Display the program listing
-void __fastcall TForm1::ListBox1DrawItem(TWinControl *Control, int Index,
+void  TForm1::ListBox1DrawItem(TWinControl *Control, int Index,
       TRect &Rect, TOwnerDrawState State)
 {
   int i, tab, nSpaces, addr;
@@ -689,7 +693,7 @@ void __fastcall TForm1::ListBox1DrawItem(TWinControl *Control, int Index,
 
 //---------------------------------------------------------------------------
 // Draw break point dots
-void __fastcall TForm1::breakPPaint(TObject *Sender)
+void  TForm1::breakPPaint(TObject *Sender)
 {
   int i, top, addr, Index, botIndex;
   std::string str;
@@ -735,7 +739,7 @@ void __fastcall TForm1::breakPPaint(TObject *Sender)
 
 //---------------------------------------------------------------------------
 // set or clear break on this line
-void __fastcall TForm1::breakPMouseDown(TObject *Sender,
+void  TForm1::breakPMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
   int i, addr, Index;
@@ -774,7 +778,7 @@ void __fastcall TForm1::breakPMouseDown(TObject *Sender,
 
 //---------------------------------------------------------------------------
 // clear all break points from popup menu
-void __fastcall TForm1::ClearAllPCBreakpoints1Click(TObject *Sender)
+void  TForm1::ClearAllPCBreakpoints1Click(TObject *Sender)
 {
   BreaksFrm->cbpoint(-1);          // clear all break points
 //  breakP->Repaint();            // update display of breakpoints
@@ -782,7 +786,7 @@ void __fastcall TForm1::ClearAllPCBreakpoints1Click(TObject *Sender)
 
 //---------------------------------------------------------------------------
 // highlight the instruction
-void __fastcall TForm1::highlight()
+void  TForm1::highlight()
 {
   int i, botIndex;
   std::string  str;
@@ -815,7 +819,7 @@ void toUpper(string& str) {
 //---------------------------------------------------------------------------
 // search for searchStr in ListBox and highlight line if found
 // next = true to search for next match, false to search from top
-void __fastcall TForm1::find(std::string  str, bool next)
+void  TForm1::find(std::string  str, bool next)
 {
   int botIndex;
   static int i = 3;
@@ -853,7 +857,7 @@ void __fastcall TForm1::find(std::string  str, bool next)
 // check to see if str contains a machine code instruction
 // pre: str contains a line of code from the L68 file
 // post: returns true if instruction, false if not
-bool inline __fastcall TForm1::isInstruction(std::string  &str)
+bool inline  TForm1::isInstruction(std::string  &str)
 {
   if (str.SubString(1,2) == "00" &&             // address
                  str[11] != ' ' &&              // data present
@@ -866,7 +870,7 @@ bool inline __fastcall TForm1::isInstruction(std::string  &str)
 //---------------------------------------------------------------------------
 // write the current instruction line to the log file
 // returns true on success
-bool __fastcall TForm1::lineToLog()
+bool  TForm1::lineToLog()
 {
   int topIndex, botIndex, midIndex;
   std::string  str;
@@ -909,7 +913,7 @@ bool __fastcall TForm1::lineToLog()
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TForm1::ScrollBar1Change(TObject *Sender)
+void  TForm1::ScrollBar1Change(TObject *Sender)
 {
   ListBox1->Repaint();
   // scroll HeadingLbl left and right
@@ -919,7 +923,7 @@ void __fastcall TForm1::ScrollBar1Change(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::FormActivate(TObject *Sender)
+void  TForm1::FormActivate(TObject *Sender)
 {
   ListBox1->DoubleBuffered = true;
   MemoryFrm->DoubleBuffered = true;
@@ -937,7 +941,7 @@ void __fastcall TForm1::FormActivate(TObject *Sender)
 
 //---------------------------------------------------------------------------
 // change source window font
-void __fastcall TForm1::FontSourceExecute(TObject *Sender)
+void  TForm1::FontSourceExecute(TObject *Sender)
 {
   if (FontDialogSource->Execute()) {                 // if OK selected
     ListBox1->Font->Assign(FontDialogSource->Font);  // apply new font
@@ -953,7 +957,7 @@ void __fastcall TForm1::FontSourceExecute(TObject *Sender)
 
 //---------------------------------------------------------------------------
 // change output window font
-void __fastcall TForm1::FontOutputExecute(TObject *Sender)
+void  TForm1::FontOutputExecute(TObject *Sender)
 {
   if (FontDialogSimIO->Execute()) {                  // if OK selected
     simIO->BackBuffer->Canvas->Font->Assign(FontDialogSimIO->Font);  // apply new font
@@ -964,7 +968,7 @@ void __fastcall TForm1::FontOutputExecute(TObject *Sender)
 
 //---------------------------------------------------------------------------
 // printer font
-void __fastcall TForm1::FontPrinterExecute(TObject *Sender)
+void  TForm1::FontPrinterExecute(TObject *Sender)
 {
   if (FontDialogPrinter->Execute()) {               // if OK selected
     initPrint();
@@ -973,21 +977,21 @@ void __fastcall TForm1::FontPrinterExecute(TObject *Sender)
 
 //---------------------------------------------------------------------------
 // Source view font
-void __fastcall TForm1::FontDialogSourceApply(TObject *Sender, HWND Wnd)
+void  TForm1::FontDialogSourceApply(TObject *Sender, HWND Wnd)
 {
   ListBox1->Font->Assign(FontDialogSource->Font);
 }
 
 //---------------------------------------------------------------------------
 // simIO font
-void __fastcall TForm1::FontDialogSimIOApply(TObject *Sender, HWND Wnd)
+void  TForm1::FontDialogSimIOApply(TObject *Sender, HWND Wnd)
 {
   simIO->BackBuffer->Canvas->Font->Assign(FontDialogSimIO->Font);
 }
 
 //---------------------------------------------------------------------------
 // Load registers from screen
-void __fastcall TForm1::loadRegs()
+void  TForm1::loadRegs()
 {
   std::string  str = "0x";
 
@@ -1023,7 +1027,7 @@ void __fastcall TForm1::loadRegs()
 
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::regSRKeyPress(TObject *Sender, char &Key)
+void  TForm1::regSRKeyPress(TObject *Sender, char &Key)
 {
   if (regSR->SelLength > 1)     // allow only one char to be changed at a time
     regSR->SelLength = 1;
@@ -1040,7 +1044,7 @@ void __fastcall TForm1::regSRKeyPress(TObject *Sender, char &Key)
 
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::regSRChange(TObject *Sender)
+void  TForm1::regSRChange(TObject *Sender)
 {
   String str;
   if (regSR->EditText[3] == '1')   // if Supervisor mode
@@ -1054,13 +1058,13 @@ void __fastcall TForm1::regSRChange(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TForm1::Stack1Click(TObject *Sender)
+void  TForm1::Stack1Click(TObject *Sender)
 {
   StackFrm->Show();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::OutputWindow1Click(TObject *Sender)
+void  TForm1::OutputWindow1Click(TObject *Sender)
 {
   if (simIO->fullScreen){
     simIO->fullScreen = false;
@@ -1071,7 +1075,7 @@ void __fastcall TForm1::OutputWindow1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::regKeyPress(TObject *Sender, char &Key)
+void  TForm1::regKeyPress(TObject *Sender, char &Key)
 {
   if ( (Key >= '0' && Key <= '9') ||
        (toupper(Key) >= 'A' && toupper(Key) <= 'F') )
@@ -1083,14 +1087,14 @@ void __fastcall TForm1::regKeyPress(TObject *Sender, char &Key)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::RegChange(TObject *Sender)
+void  TForm1::RegChange(TObject *Sender)
 {
   //loadRegs();
   StackFrm->updateDisplay();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::regA0KeyUp(TObject *Sender, WORD &Key,
+void  TForm1::regA0KeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
   str = "0x";
@@ -1098,7 +1102,7 @@ void __fastcall TForm1::regA0KeyUp(TObject *Sender, WORD &Key,
   StackFrm->updateDisplay();
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::regA1KeyUp(TObject *Sender, WORD &Key,
+void  TForm1::regA1KeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
   str = "0x";
@@ -1106,7 +1110,7 @@ void __fastcall TForm1::regA1KeyUp(TObject *Sender, WORD &Key,
   StackFrm->updateDisplay();
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::regA2KeyUp(TObject *Sender, WORD &Key,
+void  TForm1::regA2KeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
   str = "0x";
@@ -1114,7 +1118,7 @@ void __fastcall TForm1::regA2KeyUp(TObject *Sender, WORD &Key,
   StackFrm->updateDisplay();
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::regA3KeyUp(TObject *Sender, WORD &Key,
+void  TForm1::regA3KeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
   str = "0x";
@@ -1122,7 +1126,7 @@ void __fastcall TForm1::regA3KeyUp(TObject *Sender, WORD &Key,
   StackFrm->updateDisplay();
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::regA4KeyUp(TObject *Sender, WORD &Key,
+void  TForm1::regA4KeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
   str = "0x";
@@ -1130,7 +1134,7 @@ void __fastcall TForm1::regA4KeyUp(TObject *Sender, WORD &Key,
   StackFrm->updateDisplay();
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::regA5KeyUp(TObject *Sender, WORD &Key,
+void  TForm1::regA5KeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
   str = "0x";
@@ -1138,7 +1142,7 @@ void __fastcall TForm1::regA5KeyUp(TObject *Sender, WORD &Key,
   StackFrm->updateDisplay();
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::regA6KeyUp(TObject *Sender, WORD &Key,
+void  TForm1::regA6KeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
   str = "0x";
@@ -1147,7 +1151,7 @@ void __fastcall TForm1::regA6KeyUp(TObject *Sender, WORD &Key,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::regA7KeyUp(TObject *Sender, WORD &Key,
+void  TForm1::regA7KeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
   std::string  str = "0x";
@@ -1162,7 +1166,7 @@ void __fastcall TForm1::regA7KeyUp(TObject *Sender, WORD &Key,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::regUSKeyUp(TObject *Sender, WORD &Key,
+void  TForm1::regUSKeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
   std::string  str = "0x";
@@ -1173,7 +1177,7 @@ void __fastcall TForm1::regUSKeyUp(TObject *Sender, WORD &Key,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::regA8KeyUp(TObject *Sender, WORD &Key,
+void  TForm1::regA8KeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
   std::string  str = "0x";
@@ -1183,7 +1187,7 @@ void __fastcall TForm1::regA8KeyUp(TObject *Sender, WORD &Key,
   StackFrm->updateDisplay();
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::regPCChange(TObject *Sender)
+void  TForm1::regPCChange(TObject *Sender)
 {
   // If NOT (auto trace AND display is disabled)
   if(!(autoTraceInProgress && AutoTraceOptions->DisableDisplay->Checked))
@@ -1194,13 +1198,13 @@ void __fastcall TForm1::regPCChange(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::Memory1Click(TObject *Sender)
+void  TForm1::Memory1Click(TObject *Sender)
 {
   MemoryFrm->Show();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::FormShow(TObject *Sender)
+void  TForm1::FormShow(TObject *Sender)
 {
   std::string  fileName, ext, option;
 
@@ -1239,21 +1243,21 @@ void __fastcall TForm1::FormShow(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::BreakPoints1Click(TObject *Sender)
+void  TForm1::BreakPoints1Click(TObject *Sender)
 {
   BreaksFrm->Show();
 }
 //---------------------------------------------------------------------------
 
 
-void __fastcall TForm1::FormResize(TObject *Sender)
+void  TForm1::FormResize(TObject *Sender)
 {
   Form1->Repaint();
 }
 //---------------------------------------------------------------------------
 
 // Clear Cycles button pressed
-void __fastcall TForm1::ClearCyclesClick(TObject *Sender)
+void  TForm1::ClearCyclesClick(TObject *Sender)
 {
   std::string  str;
 
@@ -1262,13 +1266,13 @@ void __fastcall TForm1::ClearCyclesClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::LogOutput1Click(TObject *Sender)
+void  TForm1::LogOutput1Click(TObject *Sender)
 {
   Log->Show();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::ExceptionsEnabledClick(TObject *Sender)
+void  TForm1::ExceptionsEnabledClick(TObject *Sender)
 {
   if (exceptions) {
     exceptions = false;
@@ -1281,7 +1285,7 @@ void __fastcall TForm1::ExceptionsEnabledClick(TObject *Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TForm1::displayHelp(char* context)
+void  TForm1::displayHelp(char* context)
 {
   HWND H = ::GetDesktopWindow();  //this->Handle;  //::GetDesktopWindow();
   if (HHLibrary != 0)
@@ -1291,14 +1295,14 @@ void __fastcall TForm1::displayHelp(char* context)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TForm1::HelpExecute(TObject *Sender)
+void  TForm1::HelpExecute(TObject *Sender)
 {
   displayHelp("SIM_BASIC");
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key,
+void  TForm1::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
    if (disableKeyCommands)
@@ -1312,14 +1316,14 @@ void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::BringToFront()
+void  TForm1::BringToFront()
 {
   Form1->SetFocus();
 }
 //---------------------------------------------------------------------------
 
 // Set PC to address on Double-Clicked line
-void __fastcall TForm1::ListBox1DblClick(TObject *Sender)
+void  TForm1::ListBox1DblClick(TObject *Sender)
 {
   int i, botIndex;
   std::string  str;
@@ -1330,13 +1334,13 @@ void __fastcall TForm1::ListBox1DblClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::AutoTraceExecute(TObject *Sender)
+void  TForm1::AutoTraceExecute(TObject *Sender)
 {
   AutoTraceTimer->Enabled = true;
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::AutoTraceTimerTimer(TObject *Sender)
+void  TForm1::AutoTraceTimerTimer(TObject *Sender)
 {
   if (!inputMode)
   {
@@ -1350,20 +1354,20 @@ void __fastcall TForm1::AutoTraceTimerTimer(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::SimulatorOptionsClick(TObject *Sender)
+void  TForm1::SimulatorOptionsClick(TObject *Sender)
 {
   AutoTraceOptions->ShowModal();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::Hardware1Click(TObject *Sender)
+void  TForm1::Hardware1Click(TObject *Sender)
 {
   Hardware->Show();
 }
 //---------------------------------------------------------------------------
 
 
-void __fastcall TForm1::ReloadExecute(TObject *Sender)
+void  TForm1::ReloadExecute(TObject *Sender)
 {
   OpenFile(OpenDialog1->FileName);
   Log->addMessage("\n***** Reload Program Pressed *****\n");
@@ -1373,13 +1377,13 @@ void __fastcall TForm1::ReloadExecute(TObject *Sender)
 
 
 
-void __fastcall TForm1::PrinterSetup1Click(TObject *Sender)
+void  TForm1::PrinterSetup1Click(TObject *Sender)
 {
   PrinterSetupDialog1->Execute();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::mmuFullscreenOptionsClick(TObject *Sender)
+void  TForm1::mmuFullscreenOptionsClick(TObject *Sender)
 {
   if (MultimonitorAPIsExist){
     if (simIO->fullScreen == false){
@@ -1402,32 +1406,32 @@ void TForm1::OnDisplayChange(TWMDisplayChange& temp){
 //---------------------------------------------------------------------------
 
 
-void __fastcall TForm1::regPCDblClick(TObject *Sender)
+void  TForm1::regPCDblClick(TObject *Sender)
 {
   highlight();          // highlight current PC in program listing
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::regDblClick(TObject *Sender)
+void  TForm1::regDblClick(TObject *Sender)
 {
   MemoryFrm->Address1->EditText = ((TMaskEdit*)(Sender))->EditText;
   MemoryFrm->Show();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::LogStartExecute(TObject *Sender)
+void  TForm1::LogStartExecute(TObject *Sender)
 {
   Log->startLog();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::LogStopExecute(TObject *Sender)
+void  TForm1::LogStopExecute(TObject *Sender)
 {
   Log->stopLog();
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TForm1::SaveSettings()
+void  TForm1::SaveSettings()
 // saves simulator settings to file
 {
   try {
@@ -1486,7 +1490,7 @@ void __fastcall TForm1::SaveSettings()
 
 //--------------------------------------------------------------------------
 // Sets default settings for simulator
-void __fastcall TForm1::defaultSettings()
+void  TForm1::defaultSettings()
 {
   try {
     ElogFlag = 0;               // disable logging on startup
@@ -1548,7 +1552,7 @@ void __fastcall TForm1::defaultSettings()
 // are saved as 1 and 0.
 // If the contents of sim68K.dat to not match expected then default values
 // are used.
-void __fastcall TForm1::LoadSettings()
+void  TForm1::LoadSettings()
 {
   try {
     const int SIZE = 256;
@@ -2034,7 +2038,7 @@ void __fastcall TForm1::LoadSettings()
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::BitFieldEnabledClick(TObject *Sender)
+void  TForm1::BitFieldEnabledClick(TObject *Sender)
 {
   if (bitfield) {
     bitfield = false;
@@ -2048,7 +2052,7 @@ void __fastcall TForm1::BitFieldEnabledClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TForm1::WindowSizeClick(TObject *Sender)
+void  TForm1::WindowSizeClick(TObject *Sender)
 {
   switch(((TComponent *)Sender)->Tag)
   {
@@ -2087,7 +2091,7 @@ void __fastcall TForm1::WindowSizeClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::WindowSizeChecked()
+void  TForm1::WindowSizeChecked()
 {
   ushort width, height;
   simIO->getWindowSize(width, height);
@@ -2121,7 +2125,7 @@ void __fastcall TForm1::WindowSizeChecked()
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::OutputWindowTextWrap1Click(TObject *Sender)
+void  TForm1::OutputWindowTextWrap1Click(TObject *Sender)
 {
   if(OutputWindowTextWrap1->Checked)
   {
@@ -2134,19 +2138,19 @@ void __fastcall TForm1::OutputWindowTextWrap1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::SearchExecute(TObject *Sender)
+void  TForm1::SearchExecute(TObject *Sender)
 {
   findDialogFrm->Show();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::GotoPC1Click(TObject *Sender)
+void  TForm1::GotoPC1Click(TObject *Sender)
 {
   highlight();        
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::EASyBIN1Click(TObject *Sender)
+void  TForm1::EASyBIN1Click(TObject *Sender)
 {
   std::string  easybin;
   //run EASyBIN

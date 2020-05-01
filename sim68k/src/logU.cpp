@@ -128,7 +128,7 @@ void  TLog::prepareLogFile()
         ElogFile = fopen(ELogFileName->Text.c_str(), "wt"); // open log file
       }
       if (!ElogFile) {                // if file error
-        sprintf(buffer,"Can't open log file. Check log file name., Error number %d\n", ElogFile);
+        sprintf(buffer,"Can't open log file. Check log file name., name %s\n", ELogFileName->Text.c_str());
         Application->MessageBox(buffer, "Error", MB_OK);
         stopLog();
         Log->Show();            // display log form
@@ -174,7 +174,7 @@ void  TLog::prepareLogFile()
         OlogFile = fopen(OLogFileName->Text.c_str(), "wb"); // open log file
       }
       if (!OlogFile) {           // if error
-        sprintf(buffer,"Can't open log file, error %d\n", OlogFile);
+        sprintf(buffer,"Can't open log file %s\n", ELogFileName->Text.c_str());
         Application->MessageBox(buffer, "Error", MB_OK);
         stopLog();
         return;
@@ -269,7 +269,7 @@ void  TLog::MemFromExit(TObject *Sender)
   AnsiString str = "0x";
   int addr = StrToInt(str + MemFrom->EditText);
   if (addr < 0 || addr >= MEMSIZE)   // if invalid address
-    MessageDlg("Invalid Address", mtInformation, TMsgDlgButtons() << mbOK, 0);
+    MessageDlg("Invalid Address", mtInformation, mbOK, 0);
 }
 //---------------------------------------------------------------------------
 

@@ -147,13 +147,14 @@ unsigned char FullScreenMonitor;
 char FullScreenDeviceName[32];
 
 // function pointers to APIs that don't always exist. (for compatibility with 95)
+/*
 typedef HRESULT (CALLBACK* CHANGEDISPLAYSETTINGSEXAPROC)(LPCTSTR,LPDEVMODEA,HWND,DWORD,LPVOID);
 CHANGEDISPLAYSETTINGSEXAPROC ChangeDisplaySettingsExAPtr;
 typedef HRESULT (CALLBACK* ENUMDISPLAYSETTINGSEXAPROC)(LPCTSTR,DWORD,LPDEVMODE,DWORD);
 ENUMDISPLAYSETTINGSEXAPROC EnumDisplaySettingsExAPtr;
 typedef HRESULT (CALLBACK* ENUMDISPLAYDEVICESAPROC)(LPCTSTR,DWORD,PDISPLAY_DEVICE,DWORD);
 ENUMDISPLAYDEVICESAPROC EnumDisplayDevicesAPtr;
-
+*/
 // true if directSound may be used
 bool dsoundExist;
 
